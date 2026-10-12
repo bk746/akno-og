@@ -1,26 +1,8 @@
-@import "tailwindcss";
+/* Styles du site : CSS critique injecté par page */
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Filet si base.js n’a pas encore lancé heroIn (.js masque .rv) */
+.no-pre .hero .ml i,
+.no-pre .hero .rv {
+  opacity: 1;
+  transform: none;
 }

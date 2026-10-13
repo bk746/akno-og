@@ -1,7 +1,15 @@
 /* Mobile uniquement (≤768px) */
 @media (max-width: 768px) {
-  .lg-b {
+  .hd,
+  .hd.inv {
+    color: #020202 !important;
+  }
+
+  .lg-b,
+  .hd.inv .lg-b {
     background: #fff;
+    color: #020202;
+    box-shadow: inset 0 0 0 2px #020202;
   }
 
   .bu,
@@ -9,7 +17,14 @@
   .mn-o .bu,
   .mn-o .hd.inv .bu {
     background: #fff !important;
-    color: #020202;
+    color: #020202 !important;
+    box-shadow: inset 0 0 0 2px #020202;
+  }
+
+  .hd.inv .bu:hover,
+  .mn-o .hd.inv .bu:hover {
+    background: #fff !important;
+    color: #020202 !important;
   }
 
   .hero .cap {

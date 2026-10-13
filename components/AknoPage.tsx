@@ -1,5 +1,8 @@
 import AknoSiteBoot from "@/components/AknoSiteBoot";
+import WorkFilter from "@/components/WorkFilter";
 import { loadAknoPage } from "@/lib/akno-site";
+
+const WORK_FILTER_PAGES = new Set(["index.html", "realisations.html"]);
 
 type AknoPageProps = {
   htmlPath: string;
@@ -19,6 +22,7 @@ export default function AknoPage({ htmlPath }: AknoPageProps) {
         dangerouslySetInnerHTML={{ __html: page.bodyHtml }}
       />
       <AknoSiteBoot />
+      {WORK_FILTER_PAGES.has(htmlPath) ? <WorkFilter /> : null}
     </>
   );
 }

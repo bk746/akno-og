@@ -1,7 +1,7 @@
 import { readFileSync } from "fs";
 import { join } from "path";
 
-const SITE_ROOT = join(process.cwd(), "akno-site 3 copy");
+const SITE_ROOT = join(process.cwd(), "reference");
 
 export type AknoPageData = {
   title: string;

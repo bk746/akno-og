@@ -1,8 +1,1 @@
-/* Styles du site : CSS critique injecté par page */
-
-/* Filet si base.js n’a pas encore lancé heroIn (.js masque .rv) */
-.no-pre .hero .ml i,
-.no-pre .hero .rv {
-  opacity: 1;
-  transform: none;
-}
+/* Styles du site : CSS critique injecté depuis reference/ (bloc <style> de chaque page HTML). */

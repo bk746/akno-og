@@ -1,6 +1,4 @@
 import type { Metadata } from "next";
-import Script from "next/script";
-import Menu from "@/components/Menu";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -9,7 +7,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="fr" className="no-pre" suppressHydrationWarning>
+    <html lang="fr" suppressHydrationWarning>
       <head>
         <link
           rel="preload"
@@ -18,18 +16,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           type="font/woff2"
           crossOrigin="anonymous"
         />
-        <Script
-          id="ak-no-pre"
-          strategy="beforeInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `try{if(sessionStorage.akIntro||matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("no-pre")}catch(e){}`,
-          }}
-        />
       </head>
-      <body>
-        {children}
-        <Menu />
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

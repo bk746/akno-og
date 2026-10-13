@@ -24,7 +24,10 @@ draw=()=>{const r=Math.min(devicePixelRatio||1,1.5)*.6,W=innerWidth*r|0,H=innerH
 }catch(e){console.warn(e)}
 let vis=true;const loop=()=>{if(vis)draw();if(!rm)requestAnimationFrame(loop)};loop();addEventListener('resize',()=>rm&&draw());
 addEventListener('pointermove',e=>{S.tx=e.clientX/innerWidth;S.ty=1-e.clientY/innerHeight});
-const mn=$('#mn');if(mn)mn.hidden=true;
+// menu
+const bu=$('#bu'),mn=$('#mn');const setM=o=>{bu.setAttribute('aria-expanded',o);bu.setAttribute('aria-label',o?'Fermer le menu':'Ouvrir le menu');mn.hidden=!o;d.classList.toggle('mn-o',o);if(o)mn.querySelector('a').focus()};
+bu.addEventListener('click',()=>setM(bu.getAttribute('aria-expanded')!=='true'));mn.addEventListener('click',e=>{if(e.target.closest('a'))setM(false)});
+addEventListener('keydown',e=>{if(e.key==='Escape'&&!mn.hidden){setM(false);bu.focus()}});addEventListener('pointerdown',e=>{if(!mn.hidden&&!mn.contains(e.target)&&!bu.contains(e.target))setM(false)});
 // legal details open from #hash
 const oh=()=>{const t=location.hash&&document.getElementById(location.hash.slice(1));if(t&&t.tagName==='DETAILS'){t.open=true;setTimeout(()=>t.scrollIntoView({block:'center'}),60)}};addEventListener('hashchange',oh);addEventListener('load',oh);
 // contact form: prefill ?service=, honest status
@@ -93,9 +96,12 @@ $$('.wc--b').forEach(ft=>{gsap.fromTo(ft,{clipPath:'inset(14% 10% 14% 10% round 
 gsap.fromTo($('.wc-i',ft),{scale:1.25},{scale:1,ease:'none',scrollTrigger:{trigger:ft,start:'top 95%',end:'top 25%',scrub:true}})});
 // work cards rise in staggered columns
 if(!mob)$$('.wg .wc').forEach((c,i)=>gsap.from(c,{y:i%2?160:80,ease:'none',scrollTrigger:{trigger:c,start:'top bottom',end:'top 40%',scrub:true}}));
-if(matchMedia('(pointer:fine)').matches){
- $$('.pb,.arw').forEach(b=>{b.addEventListener('pointermove',e=>{const r=b.getBoundingClientRect();gsap.to(b,{x:(e.clientX-r.left-r.width/2)*.18,y:(e.clientY-r.top-r.height/2)*.28,duration:.5,ease:'power3'})});b.addEventListener('pointerleave',()=>gsap.to(b,{x:0,y:0,duration:.7,ease:'elastic.out(1,.45)'}))})}
+// project cursor label (only over work images, fine pointers)
+if(matchMedia('(pointer:fine)').matches){const lb=document.createElement('div');lb.className='vw';lb.innerHTML='Voir le projet';document.body.append(lb);const qx=gsap.quickTo(lb,'x',{duration:.45,ease:'power3'}),qy=gsap.quickTo(lb,'y',{duration:.45,ease:'power3'});
+ $$('.wc-i').forEach(w=>{w.addEventListener('pointerenter',()=>gsap.to(lb,{scale:1,opacity:1,duration:.4,ease:'expo.out'}));w.addEventListener('pointerleave',()=>gsap.to(lb,{scale:.4,opacity:0,duration:.3}));w.addEventListener('pointermove',e=>{qx(e.clientX);qy(e.clientY)})});
+ // magnetic buttons
+ $$('.pb,.bu,.arw').forEach(b=>{b.addEventListener('pointermove',e=>{const r=b.getBoundingClientRect();gsap.to(b,{x:(e.clientX-r.left-r.width/2)*.18,y:(e.clientY-r.top-r.height/2)*.28,duration:.5,ease:'power3'})});b.addEventListener('pointerleave',()=>gsap.to(b,{x:0,y:0,duration:.7,ease:'elastic.out(1,.45)'}))})}
 // header hides on scroll down
-let ly=0;lenis.on('scroll',({scroll})=>{if(Math.abs(scroll-ly)<6)return;hd.style.transform=scroll>ly&&scroll>300&&!d.classList.contains('ak-menu-open')?'translateY(-120%)':'';ly=scroll});
+let ly=0;lenis.on('scroll',({scroll})=>{if(Math.abs(scroll-ly)<6)return;hd.style.transform=scroll>ly&&scroll>300&&mn.hidden?'translateY(-120%)':'';ly=scroll});
 addEventListener('load',()=>ScrollTrigger.refresh());
 })();

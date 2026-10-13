@@ -4,8 +4,6 @@
 .skip{position:fixed;left:16px;top:-80px;z-index:300;background:#020202;color:#fff;padding:12px 18px;border-radius:999px;font:650 15px M}.skip:focus{top:16px}
 .sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 :focus-visible{outline:2px solid var(--A);outline-offset:3px;border-radius:6px}
-.mn-c{display:flex;flex-direction:column;gap:2px;margin-top:12px;padding:14px 10px 4px;border-top:1px solid rgba(255,255,255,.18)}
-.mn .mn-c a{font:600 15px/1.6 M;padding:0;color:rgba(255,255,255,.8)}.mn .mn-c a:hover{background:none;color:#fff}
 /* home additions */
 .sc-b{display:flex;gap:10px;flex-wrap:wrap}
 .pb--ow{box-shadow:inset 0 0 0 1.5px #fff;color:#fff}.pb--ow:hover{background:#fff;color:#020202}

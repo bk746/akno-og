@@ -1,8 +1,19 @@
 /* AKNO base layer: tiny vanilla JS, deferred. UI + intro (Web Animations API). The motion layer (GSAP, Lenis, WebGL) loads on first interaction. */
 (()=>{const d=document.documentElement,$=(s,c=document)=>c.querySelector(s),$$=(s,c=document)=>[...c.querySelectorAll(s)],rm=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const ME=document.currentScript&&document.currentScript.src;
-// menu: React Menu.tsx (components/Menu.tsx)
-const mn=$('#mn');if(mn)mn.hidden=true;
+// menu
+// menu (vanilla, CSS-driven open/close; see .mn rules)
+const bu=$('#bu'),mn=$('#mn');if(bu&&mn){let open=false,tm;const sb=()=>innerWidth-d.clientWidth;
+ const items=()=>[bu,...$$('a',mn)];
+ const setM=o=>{if(o===open)return;open=o;clearTimeout(tm);bu.setAttribute('aria-expanded',o);bu.setAttribute('aria-label',o?'Fermer le menu':'Ouvrir le menu');mn.inert=!o;mn.setAttribute('aria-hidden',!o);
+  if(o){document.body.style.paddingRight=sb()?sb()+'px':'';d.classList.add('mn-o');d.style.overflow='hidden';window.__lenis&&__lenis.stop();setTimeout(()=>{const a=$('a',mn);a&&a.focus({preventScroll:true})},rm?0:300)}
+  else{d.classList.remove('mn-o');d.style.overflow='';document.body.style.paddingRight='';window.__lenis&&__lenis.start()}};
+ bu.addEventListener('click',()=>setM(!open));
+ mn.addEventListener('click',e=>{if(e.target.closest('a'))setM(false)});
+ const sc=$('.mn-sc');sc&&sc.addEventListener('click',()=>setM(false));
+ addEventListener('keydown',e=>{if(!open)return;if(e.key==='Escape'){setM(false);bu.focus()}else if(e.key==='Tab'){const f=items(),i=f.indexOf(document.activeElement);if(e.shiftKey&&i<=0){f[f.length-1].focus();e.preventDefault()}else if(!e.shiftKey&&i===f.length-1){f[0].focus();e.preventDefault()}}});
+ addEventListener('pointerdown',e=>{if(open&&!mn.contains(e.target)&&!bu.contains(e.target))setM(false)});
+ window.__menu=setM}
 // legal details open from #hash
 const oh=()=>{const t=location.hash&&document.getElementById(location.hash.slice(1));if(t&&t.tagName==='DETAILS'){t.open=true;setTimeout(()=>t.scrollIntoView({block:'center'}),60)}};addEventListener('hashchange',oh);addEventListener('load',oh);
 // contact form: prefill ?service=, honest status
@@ -22,11 +33,10 @@ const hd=$('#hd'),darks=$$('.dk,.ft');const hu=()=>{const y=40;hd.classList.togg
 const wa=$('.wa');if(wa){const wu=()=>wa.classList.toggle('show',innerWidth>768||scrollY>innerHeight*.6);addEventListener('scroll',wu,{passive:true});addEventListener('resize',wu);wu()}
 // intro (home, once per session). The hero text is painted on the first frame underneath, so LCP is not delayed by the overlay.
 const pre=$('#pre'),EO='cubic-bezier(.19,1,.22,1)',EIO='cubic-bezier(.87,0,.13,1)';
-const showHero=()=>{$$('.hero .ml i,.hero .rv').forEach(el=>{el.style.opacity='1';el.style.transform='none'})};
-const heroIn=del=>{if(rm){showHero();return}$$('.hero .ml i').forEach((l,i)=>l.animate([{transform:'translateY(105%) rotate(4deg)'},{transform:'none'}],{duration:1000,delay:del+i*90,easing:EO,fill:'backwards'}));
+const heroIn=del=>{if(rm)return;$$('.hero .ml i').forEach((l,i)=>l.animate([{transform:'translateY(105%) rotate(4deg)'},{transform:'none'}],{duration:1000,delay:del+i*90,easing:EO,fill:'backwards'}));
  const c=$('.hero .cap');c&&c.animate([{transform:'scale(0) rotate(-12deg)'},{transform:'none'}],{duration:1100,delay:del+350,easing:EO,fill:'backwards'});
  $$('.hero .rv').forEach((e,i)=>e.animate([{opacity:.01,transform:'translateY(36px)'},{opacity:1,transform:'none'}],{duration:900,delay:del+500+i*80,easing:EO,fill:'backwards'}))};
-if(pre){if(d.classList.contains('no-pre')||rm){pre.remove();if($('.hero'))heroIn(60)}else{try{sessionStorage.akIntro=1}catch(e){}
+if(pre){if(d.classList.contains('no-pre')||rm){pre.remove()}else{try{sessionStorage.akIntro=1}catch(e){}
  const ak=$('.pre-ak'),tgt=$('.lg-b svg'),n=$('.pre-n'),bar=$('.pre-l i'),T0=performance.now();let fin=false,go2=false;tgt.style.opacity=0;
  const im=$$('img').filter(i=>i.loading!=='lazy'&&i.getBoundingClientRect().top<innerHeight*1.2);
  const end=()=>{if(fin)return;fin=true;pre.remove();tgt.style.opacity=''};setTimeout(end,2500);

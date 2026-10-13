@@ -1,8 +1,7 @@
 "use client";
 
+import Script from "next/script";
 import { useEffect } from "react";
-
-const BASE_SCRIPT = "/assets/js/base.js";
 
 function isInternalNavHref(href: string): boolean {
   if (!href || href.startsWith("#") || href.startsWith("mailto:") || href.startsWith("tel:")) {
@@ -21,11 +20,6 @@ function isInternalNavHref(href: string): boolean {
 
 export default function AknoSiteBoot() {
   useEffect(() => {
-    const script = document.createElement("script");
-    script.src = BASE_SCRIPT;
-    script.defer = true;
-    document.body.appendChild(script);
-
     const onClick = (e: MouseEvent) => {
       const a = (e.target as Element | null)?.closest("a");
       if (!a || a.target === "_blank" || a.hasAttribute("download")) return;
@@ -35,12 +29,8 @@ export default function AknoSiteBoot() {
       window.location.assign(href);
     };
     document.addEventListener("click", onClick, true);
-
-    return () => {
-      script.remove();
-      document.removeEventListener("click", onClick, true);
-    };
+    return () => document.removeEventListener("click", onClick, true);
   }, []);
 
-  return null;
+  return <Script src="/assets/js/base.min.js" strategy="afterInteractive" />;
 }

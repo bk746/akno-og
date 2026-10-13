@@ -30,6 +30,34 @@
   .hero .cap {
     display: none !important;
   }
+
+  .apc {
+    text-align: center;
+    align-items: center;
+  }
+
+  .apc h3,
+  .apc > p:last-child {
+    max-width: 28ch;
+  }
+
+  .pr-c {
+    text-align: center;
+  }
+
+  .pr-c h2 {
+    max-width: 22ch;
+    margin-inline: auto;
+  }
+
+  .pr-g > div {
+    text-align: center;
+  }
+
+  .pr-g p:last-child {
+    max-width: 36ch;
+    margin-inline: auto;
+  }
 }
 
 /* Cartes services — accueil + /services */

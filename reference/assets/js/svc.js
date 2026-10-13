@@ -1,7 +1,8 @@
 // Service panels — GSAP, transform/opacity only. Each loop ≈5s, plays only in view.
 (()=>{if(!window.gsap)return;const rm=matchMedia('(prefers-reduced-motion: reduce)').matches,$=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
 const X='expo.out',SP='elastic.out(1,.6)';
-const fit=()=>$$('.sc-a').forEach(p=>gsap.set($('.stg',p),{scale:Math.min(p.clientWidth/440,p.clientHeight/400)*.84}));fit();addEventListener('resize',fit);
+const mob=()=>innerWidth<769;
+const fit=()=>$$('.sc-a').forEach(p=>{const s=$('.stg',p);if(!s)return;const refH=mob()?Math.min(330,p.clientHeight):400;const k=mob()?.95:.84;gsap.set(s,{scale:Math.min(p.clientWidth/440,refH/400)*k})});fit();addEventListener('resize',fit);
 const sheen=(s,t,at)=>t.fromTo($$('.sheen',s),{xPercent:-130},{xPercent:130,duration:1.1,ease:'power2.inOut',stagger:.06},at);
 const B={
 web(s){const v=$$('.v',s),hi=$$('.w-hi img',s),Z=[60,30,0,10,20,40];let k=0;
@@ -38,7 +39,7 @@ rf(s){const scr=$('.r-scr',s),win=$('.r-win',s),nw=$('.r-new',s),sc=$('.r-scan',
  const tl=gsap.timeline({repeat:-1,repeatDelay:.2});
  tl.fromTo(scr,{z:-220,rotationY:-14,opacity:0},{z:0,rotationY:0,opacity:1,duration:1,ease:X}).fromTo(old,{opacity:.85},{opacity:1,duration:.15,yoyo:true,repeat:3},.6)
  .fromTo(win,{xPercent:-100},{xPercent:0,duration:1.5,ease:'expo.inOut'},1.3).fromTo(nw,{xPercent:100},{xPercent:0,duration:1.5,ease:'expo.inOut'},1.3)
- .fromTo(sc,{x:0,opacity:1},{x:423,duration:1.5,ease:'expo.inOut'},1.3).to(sc,{opacity:0,duration:.3},2.8)
+ .fromTo(sc,{x:0,opacity:1},{x:()=>(scr.clientWidth||423)-3,duration:1.5,ease:'expo.inOut'},1.3).to(sc,{opacity:0,duration:.3},2.8)
  .fromTo(it,{opacity:0,y:12},{opacity:1,y:0,duration:.7,ease:X,stagger:.06},2.3).to(scr,{rotationY:6,z:40,duration:1.4,ease:'sine.inOut'},2.6);sheen(s,tl,3.2);
  tl.addLabel('end',4.4).to(scr,{opacity:0,z:-160,duration:.6,ease:'power3.in'},5.1);return tl}};
 $$('.sc-a').forEach(p=>{const s=$('.stg',p),lt=$('.lt',p),tl=B[s.dataset.k](s);
@@ -48,6 +49,6 @@ $$('.sc-a').forEach(p=>{const s=$('.stg',p),lt=$('.lt',p),tl=B[s.dataset.k](s);
  // light + gentle tilt follow the pointer; idle drift otherwise
  const lx=gsap.quickTo(lt,'x',{duration:1.2,ease:'power3'}),ly=gsap.quickTo(lt,'y',{duration:1.2,ease:'power3'}),rx=gsap.quickTo(s,'rotationX',{duration:1,ease:'power3'}),ry=gsap.quickTo(s,'rotationY',{duration:1,ease:'power3'});
  const idle=gsap.to(lt,{x:p.clientWidth*.3,y:p.clientHeight*.7,duration:6,ease:'sine.inOut',yoyo:true,repeat:-1});
- p.parentNode.addEventListener('pointermove',e=>{const r=p.getBoundingClientRect();idle.pause();lx(e.clientX-r.left);ly(e.clientY-r.top);ry(((e.clientX-r.left)/r.width-.5)*10);rx(-((e.clientY-r.top)/r.height-.5)*8)});
- p.parentNode.addEventListener('pointerleave',()=>{rx(0);ry(0);idle.resume()})});
+ if(!mob()){p.parentNode.addEventListener('pointermove',e=>{const r=p.getBoundingClientRect();idle.pause();lx(e.clientX-r.left);ly(e.clientY-r.top);ry(((e.clientX-r.left)/r.width-.5)*10);rx(-((e.clientY-r.top)/r.height-.5)*8)});
+ p.parentNode.addEventListener('pointerleave',()=>{rx(0);ry(0);idle.resume()})}});
 })();

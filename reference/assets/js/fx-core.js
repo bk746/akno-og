@@ -47,10 +47,13 @@ ScrollTrigger.batch('main .rv:not(.in)',{start:'top 88%',once:true,onEnter:b=>gs
 // light -> dark: the black panel opens from an inset rounded window
 const mob=innerWidth<769;
 $$('.dk,.ft').forEach(s=>gsap.fromTo(s,{clipPath:`inset(0% ${mob?3:6}% 0% ${mob?3:6}% round ${mob?28:56}px)`},{clipPath:'inset(0% 0% 0% 0% round 0px)',ease:'none',scrollTrigger:{trigger:s,start:'top bottom',end:'top 15%',scrub:true}}));
-// cinematic stack: covered card recedes by scale + slight blur; dim veil capped at 10%
-const cards=$$('.sc');cards.forEach((c,i)=>{const cc=$('.sc-c',c);const dim=document.createElement('i');dim.className='dim';cc.append(dim);
+// cinematic stack (desktop only): covered card recedes by scale + slight blur; dim veil capped at 10%
+const resetStackCards=()=>{$$('.sc').forEach(c=>{const cc=$('.sc-c',c);gsap.set(cc,{scale:1,yPercent:0,filter:'none',clearProps:'transform,filter'});$$('.dim',cc).forEach(d=>d.remove())})};
+const stackMmq=gsap.matchMedia();
+stackMmq.add('(min-width: 769px)',()=>{const cards=$$('.sc');cards.forEach((c,i)=>{const cc=$('.sc-c',c);const dim=document.createElement('i');dim.className='dim';cc.append(dim);
  if(i<cards.length-1)gsap.timeline({scrollTrigger:{trigger:cards[i+1],start:'top bottom',end:'top 110px',scrub:true}}).to(cc,{scale:.9,yPercent:-3,filter:'blur(1.5px)',ease:'none'},0).to(dim,{opacity:.1,ease:'none'},0);
-});
+});return()=>{resetStackCards()}});
+stackMmq.add('(max-width: 768px)',()=>{resetStackCards();return()=>{}});
 // featured project: window opens, image settles
 $$('.wc--b').forEach(ft=>{gsap.fromTo(ft,{clipPath:'inset(14% 10% 14% 10% round 28px)'},{clipPath:'inset(0% 0% 0% 0% round 28px)',ease:'none',scrollTrigger:{trigger:ft,start:'top 95%',end:'top 25%',scrub:true}});
 gsap.fromTo($('.wc-i',ft),{scale:1.25},{scale:1,ease:'none',scrollTrigger:{trigger:ft,start:'top 95%',end:'top 25%',scrub:true}})});

@@ -16,6 +16,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           type="font/woff2"
           crossOrigin="anonymous"
         />
+        <link rel="stylesheet" href="/assets/svc-mobile.css" />
       </head>
       <body>{children}</body>
     </html>

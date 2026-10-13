@@ -1,4 +1,23 @@
-/* Cartes services — mobile uniquement (accueil + /services) */
+/* Mobile uniquement (≤768px) */
+@media (max-width: 768px) {
+  .lg-b {
+    background: #fff;
+  }
+
+  .bu,
+  .hd.inv .bu,
+  .mn-o .bu,
+  .mn-o .hd.inv .bu {
+    background: #fff !important;
+    color: #020202;
+  }
+
+  .hero .cap {
+    display: none !important;
+  }
+}
+
+/* Cartes services — accueil + /services */
 @media (max-width: 768px) {
   .stack {
     margin-inline: calc(8px - var(--m));

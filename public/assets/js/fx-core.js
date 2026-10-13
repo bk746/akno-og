@@ -61,7 +61,5 @@ gsap.fromTo($('.wc-i',ft),{scale:1.25},{scale:1,ease:'none',scrollTrigger:{trigg
 if(!mob)$$('.wg .wc').forEach((c,i)=>gsap.from(c,{y:i%2?160:80,ease:'none',scrollTrigger:{trigger:c,start:'top bottom',end:'top 40%',scrub:true}}));
 // magnetic buttons (fine pointers)
 if(matchMedia('(pointer:fine)').matches){$$('.pb,.bu,.arw').forEach(b=>{b.addEventListener('pointermove',e=>{const r=b.getBoundingClientRect();gsap.to(b,{x:(e.clientX-r.left-r.width/2)*.18,y:(e.clientY-r.top-r.height/2)*.28,duration:.5,ease:'power3'})});b.addEventListener('pointerleave',()=>gsap.to(b,{x:0,y:0,duration:.7,ease:'elastic.out(1,.45)'}))})}
-// header hides on scroll down
-let ly=0;lenis.on('scroll',({scroll})=>{if(Math.abs(scroll-ly)<6)return;hd.style.transform=scroll>ly&&scroll>300&&!d.classList.contains('mn-o')?'translateY(-120%)':'';ly=scroll});
-addEventListener('load',()=>ScrollTrigger.refresh());
+addEventListener('load',()=>{hd.style.transform='';ScrollTrigger.refresh()});
 })();
